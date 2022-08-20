@@ -1,5 +1,6 @@
 import { FC } from "react";
 import Head from "next/head";
+import { Navbar } from "../ui";
 
 interface Props {
   children?: React.ReactNode;
@@ -18,7 +19,7 @@ export const Layout: FC<Props> = ({ children, title }) => {
           content="${name of the pokemon}, pokemon, pokedex"
         />
       </Head>
-      {/* navbar */}
+      <Navbar />
       <main>{children}</main>
     </>
   );
