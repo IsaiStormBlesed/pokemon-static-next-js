@@ -7,11 +7,11 @@ interface Props {
   title?: string;
 }
 
-export const Layout: FC<Props> = ({ children, title }) => {
+export const Layout: FC<Props> = (props) => {
   return (
     <>
       <Head>
-        <title>{title || "Pokemon App"}</title>
+        <title>{props.title || "Pokemon App"}</title>
         <meta name="author" content="Isai Reyes" />
         <meta name="description" content="Info about ${name of the pokemon}" />
         <meta
@@ -20,7 +20,13 @@ export const Layout: FC<Props> = ({ children, title }) => {
         />
       </Head>
       <Navbar />
-      <main>{children}</main>
+      <main
+        style={{
+          padding: "0px 20px",
+        }}
+      >
+        {props.children}
+      </main>
     </>
   );
 };
