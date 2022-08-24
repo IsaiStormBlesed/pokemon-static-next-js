@@ -6,10 +6,15 @@ import { Layout } from "../../components/layout";
 import { OnePokemon } from "../../interfaces";
 
 interface Props {
-  pokemon: OnePokemon;
+  bigAvatar: string;
+  name: string;
+  fd: string;
+  bd: string;
+  fs: string;
+  bs: string;
 }
 
-const PokemonPage: NextPage<Props> = ({ pokemon }) => {
+const PokemonPage: NextPage<Props> = ({ bigAvatar, name, fd, bd, fs, bs }) => {
   const router = useRouter();
 
   return (
@@ -19,11 +24,8 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
           <Card isHoverable css={{ padding: "30px" }}>
             <Card.Body>
               <Card.Image
-                src={
-                  pokemon.sprites.other?.dream_world.front_default ||
-                  "no-image.png"
-                }
-                alt={pokemon.name}
+                src={bigAvatar || "no-image.png"}
+                alt={name}
                 width="100%"
                 height={200}
               />
@@ -37,7 +39,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
               css={{ display: "flex", justifyContent: "space-between" }}
             >
               <Text css={{ textTransform: "capitalize" }} h1>
-                {pokemon.name}
+                {name}
               </Text>
               <Button color="gradient" ghost>
                 Save on Favorites
@@ -47,30 +49,10 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
             <Card.Body>
               <Text size={30}>Sprites:</Text>
               <Container display="flex">
-                <Image
-                  src={pokemon.sprites.front_default}
-                  alt={pokemon.name}
-                  width={100}
-                  height={100}
-                />
-                <Image
-                  src={pokemon.sprites.back_default}
-                  alt={pokemon.name}
-                  width={100}
-                  height={100}
-                />
-                <Image
-                  src={pokemon.sprites.front_shiny}
-                  alt={pokemon.name}
-                  width={100}
-                  height={100}
-                />
-                <Image
-                  src={pokemon.sprites.back_shiny}
-                  alt={pokemon.name}
-                  width={100}
-                  height={100}
-                />
+                <Image src={fd} alt={name} width={100} height={100} />
+                <Image src={bd} alt={name} width={100} height={100} />
+                <Image src={fs} alt={name} width={100} height={100} />
+                <Image src={bs} alt={name} width={100} height={100} />
               </Container>
             </Card.Body>
           </Card>
@@ -94,7 +76,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
-      pokemon: data,
+      bigAvatar: data.sprites.other?.dream_world.front_default,
+      name: data.name,
+      fd: data.sprites.front_default,
+      bd: data.sprites.back_default,
+      fs: data.sprites.front_shiny,
+      bs: data.sprites.back_shiny,
     },
   };
 };
