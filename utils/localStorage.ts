@@ -17,8 +17,13 @@ const isThereMyPokemon = (id: number): boolean => {
   return ids.includes(id);
 };
 
+const getFavoritesPokemon = (): number[] => {
+  return JSON.parse(localStorage.getItem("favorites") || "[]");
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   toggleFavorites,
   isThereMyPokemon,
+  getFavoritesPokemon,
 };
