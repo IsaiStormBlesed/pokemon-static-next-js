@@ -1,11 +1,13 @@
 import { Button, Card, Container, Grid, Image, Text } from "@nextui-org/react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import { pokeApi } from "../../api";
 import { Layout } from "../../components/layout";
 import { OnePokemon } from "../../interfaces";
+import { localFavorites } from "../../utils";
 
 interface Props {
+  id: number;
   bigAvatar: string;
   name: string;
   fd: string;
@@ -14,8 +16,23 @@ interface Props {
   bs: string;
 }
 
-const PokemonPage: NextPage<Props> = ({ bigAvatar, name, fd, bd, fs, bs }) => {
-  const router = useRouter();
+const PokemonPage: NextPage<Props> = ({
+  id,
+  bigAvatar,
+  name,
+  fd,
+  bd,
+  fs,
+  bs,
+}) => {
+  const [isInFavorites, setIsInFavorites] = useState(
+    localFavorites.isThereMyPokemon(id)
+  );
+
+  const handleFavorite = () => {
+    localFavorites.toggleFavorites(id);
+    setIsInFavorites(!isInFavorites);
+  };
 
   return (
     <Layout title="Pokemon">
@@ -41,8 +58,12 @@ const PokemonPage: NextPage<Props> = ({ bigAvatar, name, fd, bd, fs, bs }) => {
               <Text css={{ textTransform: "capitalize" }} h1>
                 {name}
               </Text>
-              <Button color="gradient" ghost>
-                Save on Favorites
+              <Button
+                color="gradient"
+                ghost={!isInFavorites}
+                onClick={handleFavorite}
+              >
+                {isInFavorites ? "On Favorites" : "Save on Favorites"}
               </Button>
             </Card.Header>
 
@@ -76,6 +97,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
+      id: data.id,
       bigAvatar: data.sprites.other?.dream_world.front_default,
       name: data.name,
       fd: data.sprites.front_default,
